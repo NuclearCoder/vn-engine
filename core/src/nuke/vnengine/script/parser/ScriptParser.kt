@@ -1,8 +1,8 @@
-package nuke.vnengine.script
+package nuke.vnengine.script.parser
 
 import nuke.vnengine.map
-import nuke.vnengine.script.scene.Frame
-import nuke.vnengine.script.scene.Scene
+import nuke.vnengine.script.Frame
+import nuke.vnengine.script.Scene
 import org.w3c.dom.Node
 import java.io.InputStream
 import javax.xml.parsers.DocumentBuilderFactory
@@ -63,12 +63,20 @@ class ScriptParser(val inputStream: InputStream) {
     private fun Iterable<Frame>.simplify(): Iterable<Frame> {
         val frames = mutableListOf<Frame>()
 
-        iterator().let {
+        iterator().takeIf(Iterator<Frame>::hasNext)?.let {
+            var lastFrame = it.next()
             while (it.hasNext()) {
-                it.next().let { frame ->
-
+                val last = lastFrame
+                val next = it.next()
+                when {
+                    last is Frame.Text && next is Frame.Text -> lastFrame = Frame.Text(last.text + next.text)
+                    else -> {
+                        frames.add(last)
+                        lastFrame = next
+                    }
                 }
             }
+            frames.add(lastFrame)
         }
 
         return frames

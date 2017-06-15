@@ -1,7 +1,7 @@
 package nuke.vnengine
 
 import com.badlogic.gdx.Game
-import nuke.vnengine.screens.GameScreen
+import nuke.vnengine.game.GameScreen
 import nuke.vnengine.screens.MainMenuScreen
 
 

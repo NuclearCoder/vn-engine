@@ -1,6 +1,6 @@
-package nuke.vnengine.script
+package nuke.vnengine.script.parser
 
-import nuke.vnengine.script.scene.Frame
+import nuke.vnengine.script.Frame
 import org.w3c.dom.NamedNodeMap
 
 data class Tag(val name: String, val args: NamedNodeMap) {

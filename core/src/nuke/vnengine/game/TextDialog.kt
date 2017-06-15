@@ -13,7 +13,7 @@ class TextDialog(private val assets: Assets,
 
     companion object {
         private const val delayBeforeSkippable = 0.1f
-        private val dialogSkipKeys = listOf(Input.Keys.ENTER, Input.Keys.SPACE, Input.Keys.DPAD_CENTER)
+        private val dialogSkipKeys = listOf(Input.Keys.ENTER, Input.Keys.SPACE)
     }
 
     private val buffer = StringBuilder(text.length).apply { if (text.isNotEmpty()) append(text[0]) }

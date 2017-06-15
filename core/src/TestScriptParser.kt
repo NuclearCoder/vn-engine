@@ -1,5 +1,4 @@
-
-import nuke.vnengine.script.ScriptParser
+import nuke.vnengine.script.parser.ScriptParser
 import java.nio.charset.Charset
 
 fun main(args: Array<String>) {

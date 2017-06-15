@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.FileHandleResolver
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
@@ -13,6 +12,8 @@ import ktx.assets.getValue
 import ktx.assets.load
 import ktx.assets.loadOnDemand
 import ktx.assets.setLoader
+import nuke.vnengine.script.loader.SceneLoader
+import nuke.vnengine.script.loader.SceneSetLoader
 
 
 /**
@@ -24,6 +25,8 @@ private fun font(name: String, init: FreeTypeFontGenerator.FreeTypeFontParameter
             fontFileName = name
             fontParameters.run(init)
         }
+
+private fun scene(name: String) = SceneLoader.SceneLoaderParameters(name)
 
 class Assets(resolver: FileHandleResolver) : Disposable {
 
@@ -39,20 +42,28 @@ class Assets(resolver: FileHandleResolver) : Disposable {
     }
 
     class Fonts(manager: AssetManager) {
-        val dialog by manager.load<BitmapFont>("dialog32.ttf", font("dialog.ttf") {
+        val dialog by manager.load("dialog32", font("dialog.ttf") {
              size = 32
         })
+    }
+
+    class Scripts(manager: AssetManager) {
+        val test by manager.loadOnDemand("scene name.scene", scene("test.scene.xml"))
     }
 
     val manager = AssetManager(resolver).apply {
         // FreeType font support
         setLoader(FreeTypeFontGeneratorLoader(resolver))
-        setLoader(FreetypeFontLoader(resolver), ".ttf")
+        setLoader(FreetypeFontLoader(resolver))
+        // script loader
+        setLoader(SceneSetLoader(resolver))
+        setLoader(SceneLoader(resolver))
     }
 
     val graphics = Graphics(manager)
     val audio = Audio(manager)
     val fonts = Fonts(manager)
+    val script = Scripts(manager)
 
     override fun dispose() {
         manager.clear()

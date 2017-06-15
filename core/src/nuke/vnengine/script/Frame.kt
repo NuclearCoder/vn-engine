@@ -1,4 +1,4 @@
-package nuke.vnengine.script.scene
+package nuke.vnengine.script
 
 sealed class Frame {
 
