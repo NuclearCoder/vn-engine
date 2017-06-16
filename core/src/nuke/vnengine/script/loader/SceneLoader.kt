@@ -16,14 +16,14 @@ class SceneLoader(resolver: FileHandleResolver) : SynchronousAssetLoader<Scene, 
 
     override fun getDependencies(assetName: String, file: FileHandle, parameter: SceneLoaderParameters): Array<AssetDescriptor<out Any>> {
         return Array<AssetDescriptor<out Any>>(1).apply {
-            add(AssetDescriptor(parameter.fileName, SceneSetLoader.classObject.java))
+            add(AssetDescriptor(parameter.fileName, SceneSetLoader.classObject))
         }
     }
 
     override fun load(assetManager: AssetManager, assetName: String, file: FileHandle, parameter: SceneLoaderParameters): Scene? {
         val sceneSet = assetManager.getAsset<Map<String, Scene>>(parameter.fileName)
 
-        return sceneSet[file.nameWithoutExtension()]
+        return sceneSet[assetName]
     }
 
 

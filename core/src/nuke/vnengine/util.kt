@@ -20,5 +20,4 @@ inline fun <T : Disposable> disposeOnWrite(crossinline beforeDispose: (oldValue:
 
 inline fun NodeList.toIterable() = (0 until length).map(this::item)
 
-inline fun NodeList.forEach(consumer: (Node) -> Unit) = toIterable().forEach(consumer)
 inline fun <T> NodeList.map(transform: (Node) -> T) = toIterable().map(transform)

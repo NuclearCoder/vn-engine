@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.utils.Disposable
-import ktx.assets.getValue
-import ktx.assets.load
-import ktx.assets.loadOnDemand
-import ktx.assets.setLoader
+import ktx.assets.*
 import nuke.vnengine.script.loader.SceneLoader
 import nuke.vnengine.script.loader.SceneSetLoader
 
@@ -30,25 +27,31 @@ private fun scene(name: String) = SceneLoader.SceneLoaderParameters(name)
 
 class Assets(resolver: FileHandleResolver) : Disposable {
 
-    class Graphics(manager: AssetManager) {
+    class Graphics(private val manager: AssetManager) {
+        operator fun invoke(ref: String) = manager.loadOnDemand<Texture>(ref)
+
         val badlogic by manager.loadOnDemand<Texture>("badlogic.jpg")
 
         val window by manager.load<Texture>("window.png")
         val windowArrow by manager.load<Texture>("arrow.png")
     }
 
-    class Audio(manager: AssetManager) {
+    class Music_(private val manager: AssetManager) {
+        operator fun invoke(ref: String) = manager.loadOnDemand<Music>(ref)
+
         val music by manager.loadOnDemand<Music>("music.mp3")
     }
 
-    class Fonts(manager: AssetManager) {
+    class Fonts(private val manager: AssetManager) {
         val dialog by manager.load("dialog32", font("dialog.ttf") {
              size = 32
         })
     }
 
-    class Scripts(manager: AssetManager) {
-        val test by manager.loadOnDemand("scene name.scene", scene("test.scene.xml"))
+    class Scripts(private val manager: AssetManager) {
+        operator fun invoke(name: String, file: String) = manager.loadOnDemand(name, scene(file))
+
+        val test by manager.loadOnDemand("scene name", scene("test.scene.xml"))
     }
 
     val manager = AssetManager(resolver).apply {
@@ -61,12 +64,12 @@ class Assets(resolver: FileHandleResolver) : Disposable {
     }
 
     val graphics = Graphics(manager)
-    val audio = Audio(manager)
+    val music = Music_(manager)
     val fonts = Fonts(manager)
     val script = Scripts(manager)
 
     override fun dispose() {
-        manager.clear()
+        manager.disposeSafely()
     }
 
 }

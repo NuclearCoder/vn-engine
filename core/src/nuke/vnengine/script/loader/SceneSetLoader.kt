@@ -13,7 +13,8 @@ import nuke.vnengine.script.parser.ScriptParser
 class SceneSetLoader(resolver: FileHandleResolver) : SynchronousAssetLoader<Map<String, Scene>, SceneSetLoader.SceneSetLoaderParameters>(resolver) {
 
     companion object {
-        val classObject = (mapOf<String, Scene>())::class
+        @Suppress("UNCHECKED_CAST")
+        val classObject = Map::class.java as (Class<Map<String, Scene>>)
     }
 
     class SceneSetLoaderParameters : AssetLoaderParameters<Map<String, Scene>>()
@@ -23,10 +24,7 @@ class SceneSetLoader(resolver: FileHandleResolver) : SynchronousAssetLoader<Map<
     }
 
     override fun load(assetManager: AssetManager, fileName: String, file: FileHandle, parameter: SceneSetLoaderParameters?): Map<String, Scene> {
-        val parser = file.read().use(::ScriptParser)
-        val sceneSet = parser.parse()
-
-        return sceneSet
+        return file.read().use(ScriptParser::parse)
     }
 
 

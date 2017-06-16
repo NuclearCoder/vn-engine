@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
 
-class TextDialog(private val assets: Assets,
-                 val text: String, initialSpeed: Int,
-                 val x: Float, val y: Float, val width: Float) {
+class SceneView(private val assets: Assets,
+                val text: String, initialSpeed: Int,
+                val x: Float, val y: Float, val width: Float) {
 
     companion object {
         private const val delayBeforeSkippable = 0.1f
@@ -41,7 +41,7 @@ class TextDialog(private val assets: Assets,
 
     @Suppress("NOTHING_TO_INLINE")
     inline private fun GlyphLayout.update() {
-        setText(assets.fonts.dialog, buffer, Color.WHITE, this@TextDialog.width, Align.topLeft, true)
+        setText(assets.fonts.dialog, buffer, Color.WHITE, this@SceneView.width, Align.topLeft, true)
     }
 
     @Suppress("NOTHING_TO_INLINE")

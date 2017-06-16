@@ -16,12 +16,10 @@ ok
 </script>
 """
 
-    val stream = string.byteInputStream(Charset.forName("UTF-8"))
-
-    val scenes = ScriptParser(stream).parse()
-
-    println(scenes)
-
+    string.byteInputStream(Charset.forName("UTF-8")).use {
+        val scenes = ScriptParser.parse(it)
+        println(scenes)
+    }
 
 
 }

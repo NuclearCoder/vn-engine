@@ -1,17 +1,13 @@
 package nuke.vnengine.script
 
-import java.util.function.Consumer
+import java.util.*
 
 
-sealed class Scene : Iterable<Frame> {
+sealed class Scene {
 
     abstract val name: String
-    abstract val frames: Iterable<Frame>
+    abstract val frames: Queue<Frame>
 
-    data class Classic(override val name: String, override val frames: Iterable<Frame>) : Scene()
-
-    override fun forEach(action: Consumer<in Frame>?) = frames.forEach(action)
-    override fun iterator() = frames.iterator()
-    override fun spliterator() = frames.spliterator()
+    data class Classic(override val name: String, override val frames: Queue<Frame>) : Scene()
 
 }
